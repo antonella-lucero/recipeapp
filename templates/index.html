@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recipe Search</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</head>
+<body>
+    <h1>Munch - Got ingredients? Let's make food!</h1>
+    <header>
+        <nav>
+            <a href="{{ url_for('login') }}">Login</a>
+            <a href="{{ url_for('register') }}">Register</a>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        <div id="search-section">
+           
+            <form id="search-form" method="POST">
+                <input id="ingredients-input" type="text" name="ingredients" placeholder="Enter ingredients...">
+                <button type="submit">Search</button>
+            </form>
+
+            <div id="search-results">
+                <!-- Search results will be dynamically updated here -->
+                {% for recipe in recipes %}
+                    <h2>{{ recipe.title }}</h2>
+                    <p>Used Ingredients: {{ recipe.usedIngredientCount }}</p>
+                    <p>Unused Ingredients: {{ recipe.missedIngredientCount }}</p>
+                    {% if recipe.steps %}
+                    <h3>Cooking Steps:</h3>
+                    <ol>
+                        {% for step in recipe.steps %}
+                        <li>{{ step }}</li>
+                        {% endfor %}
+                    </ol>
+                    {% else %}
+                    <p>No cooking steps provided.</p>
+                    {% endif %}
+                    <form action="{{ url_for('save_recipe') }}" method="post">
+                        <input type="hidden" name="title" value="{{ recipe.title }}">
+                        <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
+                        <button type="submit">Save Recipe</button>
+                    </form>
+                {% endfor %}
+            </div> 
+        </div>
+        {% endblock %}
+    </main>
+</body>
+</html>

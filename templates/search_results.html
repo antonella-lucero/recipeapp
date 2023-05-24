@@ -1,0 +1,24 @@
+{% for recipe in recipes %}
+<h2>{{ recipe.title }}</h2>
+
+<img src="{{ recipe.image }}" alt="{{ recipe.title }}" width="300">
+
+<p>Used Ingredients: {{ recipe.usedIngredientCount }}</p>
+<p>Unused Ingredients: {{ recipe.missedIngredientCount }}</p>
+
+{% if recipe.steps %}
+<h3>Cooking Steps:</h3>
+<ol>
+    {% for step in recipe.steps %}
+    <li>{{ step }}</li>
+    {% endfor %}
+</ol>
+{% else %}
+<p>No cooking steps provided.</p>
+{% endif %}
+<form action="{{ url_for('save_recipe') }}" method="post">
+    <input type="hidden" name="title" value="{{ recipe.title }}">
+    <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
+    <button type="submit">Save Recipe</button>
+</form>
+{% endfor %}
