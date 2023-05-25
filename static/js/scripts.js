@@ -1,25 +1,28 @@
 // Event listener for the search form
-document.getElementById('search-form').addEventListener('submit', async (event) => {
-  event.preventDefault();
+let searchForm = document.getElementById('search-form');
 
-  const formData = new FormData(event.target);
-  const ingredients = formData.get('ingredients');
-  const response = await fetch('/search', {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ ingredients })
+if (searchForm) {
+  searchForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const ingredients = formData.get('ingredients');
+    const response = await fetch('/search', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ ingredients })
+    });
+
+    if (response.ok) {
+        const data = await response.json();
+        document.getElementById('recipe-results').innerHTML = data.search_results_html;
+    } else {
+        alert('Error: Unable to fetch search results');
+    }
   });
-
-  if (response.ok) {
-      const data = await response.json();
-      document.getElementById('recipe-results').innerHTML = data.search_results_html;
-  } else {
-      alert('Error: Unable to fetch search results');
-  }
-});
-
+}
 
 // Event listener for the save recipe buttons
 document.addEventListener('click', async (event) => {

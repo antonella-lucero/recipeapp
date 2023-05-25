@@ -28,6 +28,10 @@
                 <!-- Search results will be dynamically updated here -->
                 {% for recipe in recipes %}
                     <h2>{{ recipe.title }}</h2>
+
+                    <img src="{{ recipe.image }}" alt="{{ recipe.title }}" width="300">
+
+                    
                     <p>Used Ingredients: {{ recipe.usedIngredientCount }}</p>
                     <p>Unused Ingredients: {{ recipe.missedIngredientCount }}</p>
                     {% if recipe.steps %}

@@ -102,6 +102,8 @@ def fetch_recipes(ingredients, number_of_recipes=5):
 
         recipe['image'] = recipe_details.get('image', '')
 
+    print([recipe['image'] for recipe in recipes])
+
     return recipes
 
 
@@ -187,13 +189,16 @@ def search():
     if request.method == 'POST':
         ingredients = request.form.get('ingredients')
         recipes = fetch_recipes(ingredients)
-        print(f'Recipes passed to template: {recipes}')  # Added line for logging
+        for recipe in recipes:  # Print out each recipe's image URL
+            print(recipe.image)
+        print(f'Recipes passed to template: {recipes}')
         if not recipes:
             flash('Unable to fetch recipes. Please try again later.')
             return redirect(url_for('index'))
         else:
             return render_template('search_results.html', recipes=recipes)
     return render_template('search.html')
+
 
 
 
